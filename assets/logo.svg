@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Outer circle -->
+  <circle cx="100" cy="100" r="90" stroke="#FF9F7A" stroke-width="5.5" fill="white"/>
+
+  <!-- Steam wisps (3 S-curves) -->
+  <path d="M62 57 C57 49 65 42 61 34" stroke="#FF9F7A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M96 47 C102 38 94 31 100 22" stroke="#FF9F7A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M130 55 C125 47 133 40 129 32" stroke="#FF9F7A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Left crescent dumpling -->
+  <path d="M35 90 C31 74 46 64 62 70 C69 73 69 85 61 90 Z" stroke="#FF9F7A" stroke-width="3" fill="none" stroke-linejoin="round"/>
+
+  <!-- Center steamed bun -->
+  <circle cx="97" cy="75" r="17" stroke="#FF9F7A" stroke-width="3" fill="none"/>
+  <path d="M87 71 C90 62 106 62 106 71" stroke="#FF9F7A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Right meatball + small ingredient -->
+  <circle cx="138" cy="80" r="11" stroke="#FF9F7A" stroke-width="3" fill="none"/>
+  <path d="M148 77 C152 72 158 76 155 85" stroke="#FF9F7A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Bowl rim -->
+  <line x1="24" y1="93" x2="176" y2="93" stroke="#FF9F7A" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Bowl body (slightly tapered) -->
+  <path d="M24 93 L38 162 Q42 168 100 168 Q158 168 162 162 L176 93" stroke="#FF9F7A" stroke-width="4" fill="none" stroke-linejoin="round"/>
+
+  <!-- Bowl foot -->
+  <path d="M76 168 L79 178 L121 178 L124 168" stroke="#FF9F7A" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+  <!-- "See" x2 — left of bowl interior -->
+  <text x="40" y="130" font-family="Georgia,Times,serif" font-size="19" font-style="italic" fill="#FF9F7A">See</text>
+  <text x="40" y="153" font-family="Georgia,Times,serif" font-size="19" font-style="italic" fill="#FF9F7A">See</text>
+
+  <!-- "吃啥" — right side, larger bold -->
+  <text x="82" y="157" font-family="'ZCOOL KuaiLe',sans-serif" font-size="42" font-weight="bold" fill="#FF9F7A">吃啥</text>
+</svg>

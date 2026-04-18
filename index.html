@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>美食大作战 · UI 设计稿</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   美食大作战 — Design Tokens
+   ============================================================ */
+
+:root {
+  /* Colors — Brand */
+  --c-orange:   #FF9F7A;   /* 主色 暖橘 */
+  --c-orange-2: #FFC9A9;   /* 渐变浅头 */
+  --c-orange-d: #F28560;   /* pressed */
+  --c-mint:     #7AB8A5;   /* 辅色 薄荷 */
+  --c-mint-d:   #5C9F8C;
+  --c-cream:    #FFD89E;   /* 奶油黄 */
+  --c-pink:     #FF8FA3;   /* 柔粉 */
+  --c-bg:       #FFF8F0;   /* 奶白 */
+  --c-bg-2:     #FCEFDF;   /* 底色描边 */
+  --c-ink:      #5C3D2E;   /* 深咖 */
+  --c-ink-2:    #8A6B5A;   /* 次级文字 */
+  --c-ink-3:    #B69A87;   /* 辅助/占位 */
+  --c-ink-4:    #E8D7C4;   /* 分隔线 */
+  --c-card:     #FFFFFF;
+
+  /* Gradients */
+  --g-btn:   linear-gradient(180deg, #FFB694 0%, #FF9F7A 55%, #FB8C64 100%);
+  --g-mint:  linear-gradient(180deg, #9BD0C0 0%, #7AB8A5 100%);
+  --g-cream: linear-gradient(180deg, #FFE8BC 0%, #FFD89E 100%);
+  --g-pink:  linear-gradient(180deg, #FFAAB9 0%, #FF8FA3 100%);
+  --g-card-warm: linear-gradient(160deg, #FFF3E3 0%, #FFE7D0 100%);
+  --g-bg: radial-gradient(120% 80% at 50% 0%, #FFF3E0 0%, #FFF8F0 60%);
+
+  /* Shadows */
+  --sh-sm:   0 1px 2px rgba(196, 125, 80, 0.08), 0 2px 4px rgba(196, 125, 80, 0.04);
+  --sh-md:   0 4px 10px rgba(196, 125, 80, 0.10), 0 2px 4px rgba(196, 125, 80, 0.06);
+  --sh-lg:   0 10px 24px rgba(196, 125, 80, 0.14), 0 4px 8px rgba(196, 125, 80, 0.06);
+  --sh-btn:  0 6px 14px rgba(255, 127, 80, 0.35), 0 2px 4px rgba(255, 127, 80, 0.25), inset 0 1px 0 rgba(255,255,255,0.5);
+  --sh-btn-a:0 3px 8px rgba(255, 127, 80, 0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+  --sh-pop:  0 18px 40px rgba(92, 61, 46, 0.18), 0 4px 12px rgba(92, 61, 46, 0.08);
+
+  /* Radii */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 9999px;
+
+  /* Spacing scale (4px base) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+
+  /* Type scale */
+  --f-head:   "ZCOOL KuaiLe", "Smiley Sans", "HYWenHei-85W", "PingFang SC", system-ui, sans-serif;
+  --f-body:   -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --f-hand:   "Ma Shan Zheng", "Caveat", "PingFang SC", cursive;
+  --f-mono:   ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --t-display: 700 28px/1.2 var(--f-head);
+  --t-h1:      700 22px/1.3 var(--f-head);
+  --t-h2:      600 18px/1.35 var(--f-head);
+  --t-h3:      600 16px/1.4 var(--f-body);
+  --t-body:    500 15px/1.65 var(--f-body);
+  --t-body-s:  500 13px/1.6 var(--f-body);
+  --t-cap:     500 12px/1.5 var(--f-body);
+  --t-micro:   500 11px/1.4 var(--f-mono);
+
+  /* Motion */
+  --ease:      cubic-bezier(.22,.61,.36,1);
+  --ease-back: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast:  160ms;
+  --dur:       260ms;
+  --dur-slow:  420ms;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: var(--t-body);
+  color: var(--c-ink);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; border: 0; background: none; cursor: pointer; color: inherit; }
+button:focus-visible { outline: 2px solid var(--c-orange); outline-offset: 2px; }
+
+/* ----------  Primary Button  ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  height: 52px; padding: 0 28px;
+  border-radius: var(--r-pill);
+  background: var(--g-btn);
+  color: #fff;
+  font: 600 16px/1 var(--f-head);
+  letter-spacing: 0.5px;
+  box-shadow: var(--sh-btn);
+  transition: transform var(--dur-fast) var(--ease-back),
+              box-shadow var(--dur-fast) var(--ease),
+              filter var(--dur-fast) var(--ease);
+  position: relative; overflow: hidden;
+}
+.btn::before {
+  content: ""; position: absolute; inset: 1px 1px auto 1px; height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0));
+  border-radius: 9999px 9999px 9999px 9999px / 9999px;
+  pointer-events: none;
+}
+.btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.btn:active { transform: translateY(1px) scale(0.98); box-shadow: var(--sh-btn-a); }
+.btn[disabled] {
+  background: #F0E2D0; color: #B69A87; box-shadow: none;
+  cursor: not-allowed; transform: none; filter: none;
+}
+.btn[disabled]::before { display: none; }
+.btn-ghost {
+  background: transparent; color: var(--c-ink);
+  box-shadow: inset 0 0 0 1.5px var(--c-ink-4);
+}
+.btn-ghost::before { display: none; }
+.btn-ghost:hover { background: rgba(255,159,122,0.08); }
+
+/* ----------  Card  ---------- */
+.card {
+  background: var(--c-card);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-md);
+  border: 1px solid rgba(92,61,46,0.05);
+}
+
+/* ----------  Tag / Chip  ---------- */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  background: rgba(122,184,165,0.14);
+  color: var(--c-mint-d);
+  border-radius: var(--r-pill);
+  font: 600 11px/1 var(--f-body);
+}
+.chip-orange { background: rgba(255,159,122,0.14); color: #D6694A; }
+.chip-cream { background: rgba(255,216,158,0.3); color: #A0722F; }
+.chip-pink { background: rgba(255,143,163,0.15); color: #D6516B; }
+
+/* ----------  Scrollbar hide  ---------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* ----------  Steam animation (Loading)  ---------- */
+@keyframes steamRise {
+  0%   { transform: translate(var(--sx,0), 0) scale(0.6); opacity: 0; }
+  25%  { opacity: 0.8; }
+  80%  { opacity: 0.4; }
+  100% { transform: translate(var(--sx,0), -30px) scale(1.1); opacity: 0; }
+}
+@keyframes bowlBob {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%     { transform: translateY(-4px) rotate(2deg); }
+}
+@keyframes sparkle {
+  0%,100% { transform: scale(1) rotate(0); opacity: 0.8; }
+  50%     { transform: scale(1.3) rotate(180deg); opacity: 1; }
+}
+@keyframes cardFlip {
+  0% { transform: rotateY(180deg); }
+  100% { transform: rotateY(0deg); }
+}
+@keyframes popIn {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes floatUp {
+  0%   { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+</style>
+<style>
+  body {
+    background: #FFF8F0;
+    background-image:
+      radial-gradient(900px 500px at 12% -10%, #FFE7D0 0%, rgba(255,231,208,0) 60%),
+      radial-gradient(700px 500px at 110% 120%, #E2EFE8 0%, rgba(226,239,232,0) 55%);
+    min-height: 100vh;
+  }
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(420px, 820px) 440px;
+    gap: 48px;
+    padding: 40px 40px 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+  @media (max-width: 1100px) {
+    .stage { grid-template-columns: 1fr; }
+    .phone-col { order: -1; justify-self: center; }
+  }
+  .phone-col {
+    position: sticky;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone-shell {
+    width: 375px;
+    height: 760px;
+    border-radius: 48px;
+    overflow: hidden;
+    position: relative;
+    background: #FFF8F0;
+    box-shadow: 0 40px 80px rgba(92,61,46,0.18), 0 0 0 12px #1C1C1E, 0 0 0 13px rgba(0,0,0,0.4);
+  }
+  .phone-shell::before{
+    content: ""; position: absolute; top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 28px; border-radius: 18px;
+    background: #000; z-index: 100;
+  }
+  .phone-content {
+    width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
+    padding-top: 44px;
+  }
+  .phone-content::-webkit-scrollbar { width: 0; }
+  .phone-label {
+    font: 500 12px/1 ui-monospace, menlo;
+    color: #8A6B5A;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" data-src="tarot">
+// TarotCard.jsx — back + face renderer for 塔罗牌
+// Minor-arcana-ish artwork, not any trademarked deck. Uses brand palette.
+
+const MAJOR_ARCANA = [
+  { idx: 0,  name: "愚者",   food: "街边关东煮",   icon: "🍢" },
+  { idx: 1,  name: "魔术师", food: "铁板炒饭",     icon: "🍳" },
+  { idx: 2,  name: "女祭司", food: "白粥咸菜",     icon: "🍚" },
+  { idx: 3,  name: "皇后",   food: "奶油烩饭",     icon: "🍲" },
+  { idx: 4,  name: "皇帝",   food: "红烧肉盖饭",   icon: "🍖" },
+  { idx: 5,  name: "教皇",   food: "寺庙素面",     icon: "🍜" },
+  { idx: 6,  name: "恋人",   food: "双人火锅",     icon: "🫕" },
+  { idx: 7,  name: "战车",   food: "麻辣香锅",     icon: "🌶" },
+  { idx: 8,  name: "力量",   food: "烤肉拼盘",     icon: "🥩" },
+  { idx: 9,  name: "隐者",   food: "一人食便当",   icon: "🍱" },
+  { idx: 10, name: "命运之轮", food: "盲盒寿司",   icon: "🍣" },
+  { idx: 11, name: "正义",   food: "轻食沙拉",     icon: "🥗" },
+  { idx: 12, name: "倒吊人", food: "冰镇乌冬",     icon: "🍜" },
+  { idx: 13, name: "死神",   food: "重生版螺蛳粉", icon: "🍲" },
+  { idx: 14, name: "节制",   food: "养生蒸菜",     icon: "🥟" },
+  { idx: 15, name: "恶魔",   food: "炸鸡啤酒",     icon: "🍗" },
+  { idx: 16, name: "塔",     food: "变态辣火锅",   icon: "🔥" },
+  { idx: 17, name: "星星",   food: "奶油布丁",     icon: "🍮" },
+  { idx: 18, name: "月亮",   food: "夜宵烧烤",     icon: "🍢" },
+  { idx: 19, name: "太阳",   food: "阳光早午餐",   icon: "🥞" },
+  { idx: 20, name: "审判",   food: "昨日剩菜炒饭", icon: "🍚" },
+  { idx: 21, name: "世界",   food: "环球自助餐",   icon: "🍽️" },
+];
+
+// Card back — a cream envelope stamped with a tiny logo + dotted pattern.
+function TarotBack({ w = 72, h = 110, flat = false, style = {} }) {
+  return (
+    <div style={{
+      width: w, height: h, borderRadius: 10,
+      background: "linear-gradient(150deg, #F28560 0%, #FF9F7A 48%, #FFB593 100%)",
+      position: "relative", overflow: "hidden",
+      boxShadow: flat ? "none" : "0 4px 10px rgba(196,97,57,0.28), inset 0 0 0 2px rgba(255,255,255,0.25)",
+      ...style,
+    }}>
+      {/* inner frame */}
+      <div style={{
+        position: "absolute", inset: 4, border: "1px dashed rgba(255,255,255,0.55)",
+        borderRadius: 7,
+      }} />
+      {/* center medallion */}
+      <div style={{
+        position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+        flexDirection: "column", gap: 4, color: "#FFF3E0",
+      }}>
+        <svg width={w*0.42} height={w*0.42} viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="24" r="13" fill="#FFD89E" />
+          <ellipse cx="20" cy="19" rx="12" ry="2" fill="#FFF3D6" />
+          <circle cx="16" cy="25" r="1.2" fill="#5C3D2E" />
+          <circle cx="24" cy="25" r="1.2" fill="#5C3D2E" />
+          <path d="M16 29 Q20 32 24 29" stroke="#5C3D2E" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
+          <path d="M14 10 Q14 6 17 6 M20 10 Q20 6 23 6 M26 10 Q26 6 29 6" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+        </svg>
+        <div style={{ fontSize: Math.round(w*0.11), fontWeight: 700, letterSpacing: 1, fontFamily: "'ZCOOL KuaiLe', system-ui" }}>美食大作战</div>
+      </div>
+      {/* corner pips */}
+      {["tl","tr","bl","br"].map(k => (
+        <div key={k} style={{
+          position: "absolute",
+          top: k.startsWith("t") ? 8 : "auto", bottom: k.startsWith("b") ? 8 : "auto",
+          left: k.endsWith("l") ? 8 : "auto", right: k.endsWith("r") ? 8 : "auto",
+          fontSize: 9, color: "rgba(255,255,255,0.7)", fontFamily: "serif",
+        }}>✦</div>
+      ))}
+    </div>
+  );
+}
+
+// Card face — friendly illustration per card, brand-colored
+function TarotFace({ card, w = 120, h = 180, style = {} }) {
+  const hueByIdx = [
+    ["#FFE8BC","#FFD89E"], // cream
+    ["#FFD2BD","#FF9F7A"], // orange
+    ["#D6EDE3","#7AB8A5"], // mint
+    ["#FFD4DC","#FF8FA3"], // pink
+  ];
+  const pair = hueByIdx[card.idx % 4];
+  return (
+    <div style={{
+      width: w, height: h, borderRadius: 10,
+      background: `linear-gradient(180deg, ${pair[0]} 0%, ${pair[1]} 100%)`,
+      position: "relative", overflow: "hidden",
+      boxShadow: "0 6px 14px rgba(92,61,46,0.18), inset 0 0 0 2px #FFF8F0",
+      color: "#5C3D2E",
+      display: "flex", flexDirection: "column", alignItems: "center",
+      padding: 10, ...style,
+    }}>
+      {/* inner frame */}
+      <div style={{
+        position: "absolute", inset: 6, border: "1.2px solid rgba(92,61,46,0.25)",
+        borderRadius: 7, pointerEvents: "none",
+      }} />
+      {/* top roman numeral */}
+      <div style={{
+        fontFamily: "serif", fontSize: Math.round(w*0.1),
+        fontWeight: 600, letterSpacing: 1, opacity: 0.7, marginTop: 2,
+      }}>
+        {toRoman(card.idx)}
+      </div>
+      {/* big emoji illustration */}
+      <div style={{
+        flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: Math.round(w*0.55), lineHeight: 1,
+        filter: "drop-shadow(0 3px 4px rgba(92,61,46,0.15))",
+      }}>{card.icon}</div>
+      {/* card name */}
+      <div style={{
+        fontFamily: "'ZCOOL KuaiLe', system-ui", fontWeight: 700,
+        fontSize: Math.round(w*0.12), letterSpacing: 1, marginBottom: 2,
+      }}>{card.name}</div>
+      {/* corner pip */}
+      <div style={{
+        position: "absolute", top: 8, right: 10, fontSize: Math.round(w*0.08),
+        color: "rgba(92,61,46,0.5)", fontFamily: "serif",
+      }}>✦</div>
+      <div style={{
+        position: "absolute", bottom: 8, left: 10, fontSize: Math.round(w*0.08),
+        color: "rgba(92,61,46,0.5)", fontFamily: "serif",
+      }}>✦</div>
+    </div>
+  );
+}
+
+function toRoman(n) {
+  if (n === 0) return "0";
+  const M = [
+    [10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]
+  ];
+  let out = "", rem = n;
+  for (const [v, s] of M) while (rem >= v) { out += s; rem -= v; }
+  return out;
+}
+
+Object.assign(window, { MAJOR_ARCANA, TarotBack, TarotFace });
+
+</script>
+<script type="text/babel" data-src="spec">
+// SpecPanel.jsx — Visual system showcase (color / type / spacing / radii / buttons / loading)
+
+function SpecSection({ title, subtitle, children }) {
+  return (
+    <section style={{ marginBottom: 40 }}>
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ font: "700 20px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>{title}</div>
+        {subtitle && <div style={{ font: "500 13px/1.5 system-ui", color: "#8A6B5A", marginTop: 4 }}>{subtitle}</div>}
+      </div>
+      <div className="card" style={{ padding: 24 }}>{children}</div>
+    </section>
+  );
+}
+
+function Swatch({ name, hex, gradient, note, ink = "#5C3D2E" }) {
+  return (
+    <div style={{ width: 140 }}>
+      <div style={{
+        height: 92, borderRadius: 20,
+        background: gradient || hex,
+        boxShadow: "inset 0 0 0 1px rgba(92,61,46,0.08), 0 3px 8px rgba(92,61,46,0.08)",
+        marginBottom: 10, position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", bottom: 8, right: 10,
+          font: "500 10px/1 ui-monospace, menlo", color: ink, opacity: 0.5,
+        }}>{hex?.toUpperCase()}</div>
+      </div>
+      <div style={{ font: "600 13px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>{name}</div>
+      {note && <div style={{ font: "500 11px/1.4 system-ui", color: "#8A6B5A", marginTop: 2 }}>{note}</div>}
+    </div>
+  );
+}
+
+function ColorsSpec() {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 20 }}>
+      <Swatch name="主色 · 暖橘"   hex="#FF9F7A" note="主要按钮 / 高亮"/>
+      <Swatch name="辅色 · 薄荷"   hex="#7AB8A5" note="塔罗轻量神秘"/>
+      <Swatch name="点缀 · 奶油"   hex="#FFD89E" note="背景 / 标签"/>
+      <Swatch name="点缀 · 柔粉"   hex="#FF8FA3" note="强调 / 心情"/>
+      <Swatch name="背景 · 奶白"   hex="#FFF8F0" note="主背景"/>
+      <Swatch name="文字 · 深咖"   hex="#5C3D2E" note="正文"/>
+      <Swatch name="主按钮渐变"    hex="FF9F7A→F28560" gradient="linear-gradient(180deg,#FFB694,#FF9F7A 55%,#FB8C64)" note="CTA"/>
+      <Swatch name="温暖卡片底"    hex="FFF3E3→FFE7D0" gradient="linear-gradient(160deg,#FFF3E3,#FFE7D0)" note="推荐卡片"/>
+    </div>
+  );
+}
+
+function TypeSpec() {
+  const row = (sample, spec, meta) => (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 180px", alignItems: "baseline",
+      padding: "14px 0", borderBottom: "1px dashed #E8D7C4" }}>
+      <div style={{ font: spec, color: "#5C3D2E" }}>{sample}</div>
+      <div style={{ font: "500 11px/1.4 ui-monospace,menlo", color: "#8A6B5A" }}>{meta}</div>
+    </div>
+  );
+  return (
+    <div>
+      {row("美食大作战",          "700 28px/1.2 'ZCOOL KuaiLe', system-ui",   "Display · 28/34 · 站酷庆科黄油体")}
+      {row("深呼吸，选一个今日心情","700 22px/1.3 'ZCOOL KuaiLe', system-ui",   "H1 · 22/29")}
+      {row("今日能量解读",          "600 18px/1.35 'ZCOOL KuaiLe', system-ui",  "H2 · 18/24")}
+      {row("川味辣子鸡",            "600 16px/1.4 system-ui",                   "H3 · 16/22")}
+      {row("好家伙，今天这牌阵简直是把“油门焊死”写脸上了。", "500 15px/1.65 system-ui", "Body · 15/25")}
+      {row("选 3 张卡牌（必选）",    "500 13px/1.6 system-ui",                   "Body-s · 13/21")}
+      {row("塔罗 · 轻食版",          "500 12px/1.5 system-ui",                   "Caption · 12/18")}
+      {row("STEP 01",               "500 11px/1.4 ui-monospace, menlo",         "Micro · 11 · 等宽")}
+    </div>
+  );
+}
+
+function SpacingSpec() {
+  const steps = [4,8,12,16,20,24,32,40,48];
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 14, alignItems: "flex-end", flexWrap: "wrap", marginBottom: 18 }}>
+        {steps.map(n => (
+          <div key={n} style={{ textAlign: "center" }}>
+            <div style={{ width: 56, height: n, background: "linear-gradient(180deg,#FFC9A9,#FF9F7A)",
+              borderRadius: 4, marginBottom: 6 }}/>
+            <div style={{ font: "600 11px/1 ui-monospace, menlo", color: "#5C3D2E" }}>{n}</div>
+            <div style={{ font: "500 10px/1 system-ui", color: "#B69A87", marginTop: 3 }}>s-{steps.indexOf(n)+1}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ font: "500 12px/1.5 system-ui", color: "#8A6B5A" }}>
+        4px 基准 · 卡片内边距用 20–24 · 区块间距 32–40 · 移动端外边距 20
+      </div>
+    </div>
+  );
+}
+
+function RadiiSpec() {
+  const radii = [
+    { name: "xs", val: 8, use: "小标签" },
+    { name: "sm", val: 12, use: "输入框" },
+    { name: "md", val: 16, use: "小卡片" },
+    { name: "lg", val: 20, use: "心情卡" },
+    { name: "xl", val: 28, use: "主卡片" },
+    { name: "2xl", val: 36, use: "结果气泡" },
+    { name: "pill", val: 999, use: "按钮/Chip" },
+  ];
+  return (
+    <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
+      {radii.map(r => (
+        <div key={r.name} style={{ width: 90, textAlign: "center" }}>
+          <div style={{
+            width: 78, height: 78, borderRadius: r.val,
+            background: "#FFF3E3", border: "1.5px dashed #E2B897", margin: "0 auto 8px",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            font: "600 12px/1 ui-monospace, menlo", color: "#8A6B5A",
+          }}>{r.val === 999 ? "∞" : r.val}</div>
+          <div style={{ font: "600 12px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>r-{r.name}</div>
+          <div style={{ font: "500 10px/1.3 system-ui", color: "#B69A87" }}>{r.use}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ButtonsSpec() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+        <button className="btn">开始占卜吃什么</button>
+        <button className="btn" style={{ transform: "translateY(1px) scale(0.98)", boxShadow: "var(--sh-btn-a)" }}>按下态</button>
+        <button className="btn" disabled>禁用态</button>
+        <button className="btn btn-ghost">再抽一次</button>
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <span className="chip">✦ 薄荷</span>
+        <span className="chip chip-orange">✦ 暖橘</span>
+        <span className="chip chip-cream">✦ 奶油</span>
+        <span className="chip chip-pink">✦ 柔粉</span>
+      </div>
+      <div style={{ font: "500 12px/1.5 system-ui", color: "#8A6B5A" }}>
+        按钮高度 52px (手指友好 &gt; 44pt) · 圆角 pill · hover 上移 1px · active 下移 1px + 缩 0.98
+      </div>
+    </div>
+  );
+}
+
+function LoadingSpec() {
+  return (
+    <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
+      <LoadingBowl size={120}/>
+      <div>
+        <div style={{ font: "600 14px/1.4 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>
+          🍜 蒸汽小碗
+        </div>
+        <div style={{ font: "500 12px/1.6 system-ui", color: "#8A6B5A", maxWidth: 320 }}>
+          碗体 4s 轻微左右摇晃；蒸汽 3 条交错升起 (2.4s ease-out, 延迟 0/0.6/1.2s)。
+          用在 AI 推理、翻牌过场。
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoadingBowl({ size = 96 }) {
+  const s = size;
+  return (
+    <div style={{ position: "relative", width: s, height: s*1.3, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+      {/* steam */}
+      {[0, 0.6, 1.2].map((d, i) => (
+        <div key={i} style={{
+          position: "absolute", top: 0, left: "50%",
+          width: 10, height: 14, borderRadius: 10,
+          background: "rgba(122,184,165,0.55)",
+          "--sx": `${(i-1)*8}px`,
+          animation: `steamRise 2.4s ease-out ${d}s infinite`,
+          transformOrigin: "center bottom",
+          marginLeft: (i-1)*14 - 5,
+        }}/>
+      ))}
+      {/* bowl */}
+      <div style={{
+        width: s, height: s*0.75, position: "relative",
+        animation: "bowlBob 3.2s ease-in-out infinite",
+      }}>
+        <svg viewBox="0 0 100 75" width={s} height={s*0.75}>
+          <defs>
+            <linearGradient id="bowl2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#FFC9A9"/>
+              <stop offset="1" stopColor="#FF9F7A"/>
+            </linearGradient>
+            <linearGradient id="soup2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#FFF3D6"/>
+              <stop offset="1" stopColor="#FFD89E"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="50" cy="26" rx="42" ry="6" fill="url(#soup2)"/>
+          <path d="M8 26 Q8 24 12 24 H88 Q92 24 92 26 L88 60 Q72 72 50 72 Q28 72 12 60 Z" fill="url(#bowl2)"/>
+          {/* face */}
+          <circle cx="38" cy="46" r="2.5" fill="#5C3D2E"/>
+          <circle cx="62" cy="46" r="2.5" fill="#5C3D2E"/>
+          <path d="M40 54 Q50 60 60 54" stroke="#5C3D2E" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+          <ellipse cx="30" cy="54" rx="3" ry="2" fill="#FF8FA3" opacity="0.55"/>
+          <ellipse cx="70" cy="54" rx="3" ry="2" fill="#FF8FA3" opacity="0.55"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function SpecPanel() {
+  return (
+    <div style={{ padding: "40px 32px 60px", maxWidth: 760 }}>
+      <div style={{ marginBottom: 32 }}>
+        <div className="chip chip-orange" style={{ marginBottom: 10 }}>DESIGN SYSTEM · v1.0</div>
+        <h1 style={{ font: "700 36px/1.15 'ZCOOL KuaiLe', system-ui", margin: 0, color: "#5C3D2E" }}>
+          美食大作战 · 视觉规范
+        </h1>
+        <div style={{ font: "500 14px/1.6 system-ui", color: "#8A6B5A", marginTop: 8, maxWidth: 520 }}>
+          早午餐咖啡馆菜单 × 网易云评论区 × 少女心塔罗。温暖治愈、食欲感强，
+          一点点神秘但不黑暗。
+        </div>
+      </div>
+      <SpecSection title="01 · 配色" subtitle="主辅 + 点缀 + 渐变 · 主色暖橘贯穿所有 CTA">
+        <ColorsSpec/>
+      </SpecSection>
+      <SpecSection title="02 · 字号层级" subtitle="中文可爱圆润 + 系统字正文 · 8 级"><TypeSpec/></SpecSection>
+      <SpecSection title="03 · 间距规则" subtitle="4px 基准 · 1–12 共 9 档"><SpacingSpec/></SpecSection>
+      <SpecSection title="04 · 圆角规则" subtitle="从标签到气泡，圆角随尺寸放大"><RadiiSpec/></SpecSection>
+      <SpecSection title="05 · 按钮与标签" subtitle="所有按钮 hover/active/disabled 全态"><ButtonsSpec/></SpecSection>
+      <SpecSection title="06 · Loading" subtitle="旋转小碗 + 薄荷色蒸汽"><LoadingSpec/></SpecSection>
+    </div>
+  );
+}
+
+Object.assign(window, { SpecPanel, LoadingBowl });
+
+</script>
+<script type="text/babel" data-src="mood-images">
+// mood-images.jsx — base64 mood icons (loaded regardless of server)
+const MOOD_IMG = {
+  happy: "data:image/png;base64,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",
+  energetic: "data:image/png;base64,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",
+  emo: "data:image/png;base64,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",
+  crash: "data:image/png;base64,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"
+};
+Object.assign(window, { MOOD_IMG });
+
+</script>
+<script type="text/babel" data-src="app">
+// App.jsx — 美食大作战 interactive prototype (iPhone)
+// Mood icons via PNGs (brand-tinted). 22-card tarot flow. Tweaks panel.
+
+const { useState, useEffect, useRef, useMemo } = React;
+
+const MOODS = [
+  { id: "happy",     name: "美滋滋",   png: (window.MOOD_IMG && window.MOOD_IMG.happy) || "assets/moods/happy.png",         gradient: "linear-gradient(160deg,#FFF3E3,#FFD89E)", ring: "#F5B041", note: "今天是被生活按头宠爱了" },
+  { id: "energetic", name: "元气满满", png: (window.MOOD_IMG && window.MOOD_IMG.energetic) || "assets/moods/energetic.png", gradient: "linear-gradient(160deg,#FFE4EA,#FFAAB9)", ring: "#FF8FA3", note: "可以把地球搬动的状态" },
+  { id: "emo",       name: "emo",      png: (window.MOOD_IMG && window.MOOD_IMG.emo) || "assets/moods/emo.png",             gradient: "linear-gradient(160deg,#E8F3EE,#B9DCCF)", ring: "#7AB8A5", note: "今天不想说话只想喂自己" },
+  { id: "crash",     name: "裂开",     png: (window.MOOD_IMG && window.MOOD_IMG.crash) || "assets/moods/crash.png",         gradient: "linear-gradient(160deg,#FFE1D4,#FFB694)", ring: "#FF9F7A", note: "发疯文学日 要吃点重的" },
+];
+
+// Preset final 3 picks keyed by mood (mapped to MAJOR_ARCANA idx)
+const MOOD_PICKS = {
+  happy:     [19, 17, 3],
+  energetic: [7, 20, 10],
+  emo:       [18, 12, 9],
+  crash:     [16, 15, 13],
+};
+const MOOD_READING = {
+  happy:     '好家伙，这牌阵写着“阳光落在饭上”——太阳、星星、皇后，三张温柔炸弹。今天就别折腾自己了，选点奶香、甜口、一看就开心的。',
+  energetic: '战车+审判+命运之轮，牌阵在吼“冲！”你这元气满满的状态简直刚充满的电动小马达，今天吃不住前冲不对起这手神仙牌，赶紧吃饱了继续开大！',
+  emo:       '月亮、倒吊、隐者，这牌面写着“今晚不想见人”。允许你一个人钻进碗里，温柔的、暖的、不用说话就能被抱住那种。',
+  crash:     '塔、恶魔、死神这三兄弟上桌了——你这是要原地重启啊？没关系，今天就狠狠吃一顿，把坏心情辣死、腌进火锅底料里。',
+};
+const MOOD_RECIPES = {
+  happy: [
+    { medal: "🥇", name: "阳光班尼迪克蛋", reason: "金灿灿的流心蛋黄就是太阳牌本牌。第一口黄油融化的瞬间，今天再糟也能被续命 3 小时。" },
+    { medal: "🥈", name: "焦糖奶盖布丁",   reason: "星星牌说要温柔，焦糖脆壳下面那口嫩布丁，就是‘被世界温柔对待’的味道。" },
+    { medal: "🥉", name: "奶油蘑菇烩饭",   reason: "皇后牌主打丰盛滋养，奶白色的饭裹着蘑菇香，每一勺都像被妈妈揉了揉头。" },
+  ],
+  energetic: [
+    { medal: "🥇", name: "川味辣子鸡",     reason: "战车正上位是油门焊死的冲劲，配这元气满满的状态必吃它。外焦里嫩辣过上头，像你一路狂飙不踩刹车的狠劲，吃完直接满血开大。" },
+    { medal: "🥈", name: "番茄牛腩煲",     reason: "审判牌主打灵魂大扫除，旧账全撕。这元气日子配它刚好，软烂酸甜像给肠胃做 SPA，一口清空疲惫，清爽得想原地吹口哨。" },
+    { medal: "🥉", name: "麻辣烤鱼",       reason: "命运之轮一转欧气拉满，这状态必吃它。热油滋啦像好运疯狂打转，鱼肉鲜辣过瘾，吃完感觉连明天班味都被超度了，稳赚。" },
+  ],
+  emo: [
+    { medal: "🥇", name: "味增豆腐锅",     reason: "月亮牌主打‘允许你在情绪里泡会儿’。温温热热的汤，豆腐颤颤巍巍，慢慢喝像有人轻轻拍你后背。" },
+    { medal: "🥈", name: "芝士焗饭一人份", reason: "隐者牌写着‘今天属于你自己’。一个人一盘，芝士拉丝的瞬间你不用对任何人笑。" },
+    { medal: "🥉", name: "冷泡乌冬沙拉",   reason: "倒吊人反转视角——emo 就配点清冷的。凉丝丝滑进喉咙，像眼泪反过来往里咽的那种爽。" },
+  ],
+  crash: [
+    { medal: "🥇", name: "变态辣火锅",     reason: "塔牌主打‘先把一切炸掉’。辣到流泪的那一刻，今天所有破事都被辣汤烫平了。" },
+    { medal: "🥈", name: "啤酒炸鸡",       reason: "恶魔牌说今天允许放纵，就别装健康人了。咔滋咔滋的脆皮能替你骂出你不敢说的那句话。" },
+    { medal: "🥉", name: "重口味螺蛳粉",   reason: "死神牌不是结束是重生，这一碗下去，满身汗、满脸红，明天又是敢发朋友圈的东亚战士。" },
+  ],
+};
+
+// --------- Tweaks persistence (EDITMODE) ----------
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "initialStep": "mood",
+  "initialMood": "",
+  "buttonStyle": "gradient",
+  "bgVariant": "warm",
+  "deckLayout": "fan"
+}/*EDITMODE-END*/;
+
+// ================================================================
+// Step Indicator
+// ================================================================
+function StepIndicator({ step }) {
+  const idx = { mood: 0, draw: 1, loading: 1, result: 2 }[step] ?? 0;
+  const labels = ["选心情", "抽牌", "看结果"];
+  return (
+    <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center", padding: "10px 0 4px" }}>
+      {labels.map((l, i) => (
+        <React.Fragment key={l}>
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            padding: "4px 10px", borderRadius: 999,
+            background: i <= idx ? "rgba(255,159,122,0.14)" : "transparent",
+            color: i <= idx ? "#D6694A" : "#B69A87",
+            font: "600 11px/1 system-ui",
+            transition: "all 260ms cubic-bezier(.22,.61,.36,1)",
+          }}>
+            <span style={{
+              width: 16, height: 16, borderRadius: 999,
+              background: i <= idx ? "#FF9F7A" : "#E8D7C4",
+              color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center",
+              fontSize: 10, fontWeight: 700,
+            }}>{i + 1}</span>
+            {l}
+          </div>
+          {i < 2 && <div style={{ width: 12, height: 1.5, background: i < idx ? "#FF9F7A" : "#E8D7C4", borderRadius: 2 }}/>}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+// ================================================================
+// Logo
+// ================================================================
+function LogoMark({ size = 30 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      {/* Outer circle */}
+      <circle cx="60" cy="60" r="54" stroke="#FF9F7A" strokeWidth="4" fill="none"/>
+      {/* Steam (3 S-curves) */}
+      <path d="M37 35 C33 29 39 23 36 17" stroke="#FF9F7A" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M58 28 C63 21 56 15 61 8" stroke="#FF9F7A" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M79 33 C74 26 81 20 77 14" stroke="#FF9F7A" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      {/* Left dumpling */}
+      <path d="M21 55 C18 45 28 38 37 43 C41 46 41 53 37 55 Z" stroke="#FF9F7A" strokeWidth="2" fill="none" strokeLinejoin="round"/>
+      {/* Center bun */}
+      <circle cx="58" cy="46" r="10" stroke="#FF9F7A" strokeWidth="2" fill="none"/>
+      <path d="M52 43 C54 38 64 38 64 43" stroke="#FF9F7A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* Right meatball */}
+      <circle cx="83" cy="49" r="7" stroke="#FF9F7A" strokeWidth="2" fill="none"/>
+      <path d="M89 47 C92 43 96 46 94 52" stroke="#FF9F7A" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* Bowl rim */}
+      <line x1="14" y1="57" x2="106" y2="57" stroke="#FF9F7A" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Bowl body */}
+      <path d="M14 57 L23 98 Q26 102 60 102 Q94 102 97 98 L106 57" stroke="#FF9F7A" strokeWidth="2.5" fill="none" strokeLinejoin="round"/>
+      {/* Bowl foot */}
+      <path d="M45 102 L47 108 L73 108 L75 102" stroke="#FF9F7A" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+    </svg>
+  );
+}
+
+// ================================================================
+// Header
+// ================================================================
+function AppHeader() {
+  return (
+    <div style={{ padding: "14px 20px 6px", display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{
+        width: 40, height: 40, borderRadius: 12,
+        background: "linear-gradient(160deg,#FFF3E3,#FFE7D0)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "inset 0 0 0 1px rgba(92,61,46,0.08)",
+      }}>
+        <LogoMark size={30}/>
+      </div>
+      <div style={{ flex: 1 }}>
+        <div style={{ font: "700 20px/1.1 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>美食大作战</div>
+        <div style={{ font: "500 11px/1.3 system-ui", color: "#8A6B5A", marginTop: 2 }}>今天吃什么？让塔罗帮你选 ✦</div>
+      </div>
+      <button aria-label="more" style={{
+        width: 36, height: 36, borderRadius: 999,
+        background: "#fff", boxShadow: "var(--sh-sm)", display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="3" cy="8" r="1.6" fill="#8A6B5A"/><circle cx="8" cy="8" r="1.6" fill="#8A6B5A"/><circle cx="13" cy="8" r="1.6" fill="#8A6B5A"/></svg>
+      </button>
+    </div>
+  );
+}
+
+// ================================================================
+// Step 1 — Mood
+// ================================================================
+function MoodStep({ mood, setMood, onNext }) {
+  return (
+    <div style={{ padding: "0 20px 20px", animation: "floatUp 420ms cubic-bezier(.22,.61,.36,1)" }}>
+      <SectionIntro
+        badge="STEP 01"
+        title="深呼吸，今天感觉如何？"
+        sub="随手选一个，塔罗要看菜下碟"
+      />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 14 }}>
+        {MOODS.map(m => (
+          <MoodCard key={m.id} mood={m} selected={mood === m.id} onClick={() => setMood(m.id)}/>
+        ))}
+      </div>
+
+      {mood && (
+        <div style={{
+          marginTop: 14, padding: "12px 14px",
+          background: "rgba(255,216,158,0.3)",
+          border: "1px dashed #F0C992",
+          borderRadius: 16,
+          font: "500 13px/1.5 system-ui", color: "#8A6B5A",
+          animation: "floatUp 300ms var(--ease)",
+        }}>
+          <span style={{ fontFamily: "'Ma Shan Zheng', cursive", color: "#D6694A", fontSize: 15 }}>
+            // {MOODS.find(x => x.id === mood).note}
+          </span>
+        </div>
+      )}
+
+      <div style={{ marginTop: 20 }}>
+        <button className="btn" disabled={!mood} onClick={onNext} style={{ width: "100%", height: 54 }}>
+          {mood ? "下一步 · 抽 3 张塔罗牌" : "先选一个心情"}
+          {mood && <span style={{ marginLeft: 4 }}>→</span>}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function MoodCard({ mood, selected, onClick }) {
+  const [pressed, setPressed] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      onTouchStart={() => setPressed(true)}
+      onTouchEnd={() => setPressed(false)}
+      style={{
+        position: "relative",
+        aspectRatio: "1 / 1.08",
+        borderRadius: 20,
+        background: mood.gradient,
+        border: selected ? `2px solid ${mood.ring}` : "2px solid transparent",
+        boxShadow: selected
+          ? `0 10px 22px ${hexA(mood.ring, 0.28)}, inset 0 0 0 1px rgba(255,255,255,0.5)`
+          : "0 3px 8px rgba(92,61,46,0.08), inset 0 0 0 1px rgba(255,255,255,0.5)",
+        padding: 12,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        gap: 4,
+        transform: pressed ? "scale(0.96)" : selected ? "translateY(-3px)" : "translateY(0)",
+        transition: "transform 200ms cubic-bezier(.34,1.56,.64,1), box-shadow 200ms var(--ease), border-color 200ms var(--ease)",
+        overflow: "hidden",
+      }}
+    >
+      {/* sparkle when selected */}
+      {selected && (
+        <>
+          <span style={{ position: "absolute", top: 10, right: 12, fontSize: 12, color: "#fff", animation: "sparkle 1.6s ease-in-out infinite" }}>✦</span>
+          <span style={{ position: "absolute", bottom: 14, left: 10, fontSize: 9, color: "#fff", animation: "sparkle 2s ease-in-out 0.4s infinite" }}>✦</span>
+        </>
+      )}
+      <div style={{
+        width: "62%", aspectRatio: "1 / 1",
+        background: `url(${mood.png}) center/contain no-repeat`,
+        filter: selected ? "none" : "saturate(0.9)",
+        transition: "filter 200ms",
+      }}/>
+      <div style={{
+        font: "700 16px/1.1 'ZCOOL KuaiLe', system-ui",
+        color: selected ? "#5C3D2E" : "#6B4A38",
+        letterSpacing: 0.5,
+      }}>{mood.name}</div>
+    </button>
+  );
+}
+
+// ================================================================
+// Step 2 — Draw cards
+// ================================================================
+function DrawStep({ mood, picks, setPicks, onNext, onBack, layout }) {
+  const moodObj = MOODS.find(m => m.id === mood);
+  const toggle = (i) => {
+    setPicks(prev => {
+      if (prev.includes(i)) return prev.filter(x => x !== i);
+      if (prev.length >= 3) return prev;
+      return [...prev, i];
+    });
+  };
+  return (
+    <div style={{ padding: "0 20px 20px", animation: "floatUp 420ms cubic-bezier(.22,.61,.36,1)" }}>
+      <SectionIntro
+        badge="STEP 02"
+        title="凭直觉选 3 张"
+        sub="不要想，手指最诚实"
+        right={
+          <div className="chip chip-orange" style={{ padding: "5px 10px" }}>
+            <span style={{ opacity: 0.7 }}>心情</span>&nbsp;{moodObj?.name}
+          </div>
+        }
+      />
+
+      {/* counter */}
+      <div style={{
+        marginTop: 12, display: "flex", gap: 8, justifyContent: "center",
+      }}>
+        {[0,1,2].map(i => (
+          <div key={i} style={{
+            width: 40, height: 6, borderRadius: 999,
+            background: i < picks.length ? "#FF9F7A" : "#F0E2D0",
+            transition: "background 260ms var(--ease)",
+          }}/>
+        ))}
+      </div>
+      <div style={{ textAlign: "center", font: "500 12px/1.5 system-ui", color: "#8A6B5A", marginTop: 6 }}>
+        已选 <b style={{ color: "#D6694A" }}>{picks.length}</b> / 3
+      </div>
+
+      {/* deck */}
+      {layout === "fan"
+        ? <FanDeck picks={picks} toggle={toggle}/>
+        : <GridDeck picks={picks} toggle={toggle}/>}
+
+      {/* picked preview */}
+      <div style={{ marginTop: 10, display: "flex", gap: 8, justifyContent: "center", minHeight: 68 }}>
+        {[0,1,2].map(slot => {
+          const idx = picks[slot];
+          return (
+            <div key={slot} style={{
+              width: 46, height: 68, borderRadius: 8,
+              border: idx !== undefined ? "none" : "1.5px dashed #E8D7C4",
+              background: idx !== undefined ? "transparent" : "rgba(255,255,255,0.5)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#C2A58E", font: "700 14px/1 'ZCOOL KuaiLe', system-ui",
+            }}>
+              {idx !== undefined
+                ? <div style={{ animation: "popIn 320ms var(--ease-back)" }}><TarotBack w={46} h={68}/></div>
+                : slot + 1}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+        <button className="btn btn-ghost" style={{ flex: "0 0 90px", height: 52 }} onClick={onBack}>返回</button>
+        <button className="btn" disabled={picks.length !== 3} onClick={onNext} style={{ flex: 1, height: 52 }}>
+          {picks.length === 3 ? "翻牌！看塔罗说啥" : `再选 ${3 - picks.length} 张`}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FanDeck({ picks, toggle }) {
+  // 22 cards arranged in a gentle arc
+  const total = 22;
+  const cardW = 44, cardH = 68;
+  const radius = 360;
+  const spread = 70; // degrees total
+  return (
+    <div style={{
+      position: "relative", height: 200, marginTop: 16,
+      display: "flex", alignItems: "flex-start", justifyContent: "center",
+    }}>
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        {Array.from({ length: total }).map((_, i) => {
+          const t = total === 1 ? 0.5 : i / (total - 1);
+          const angle = (t - 0.5) * spread;
+          const selected = picks.includes(i);
+          const selectedSlot = picks.indexOf(i);
+          const rad = (angle * Math.PI) / 180;
+          const cx = 335 / 2; // approx 375 - 40 padding
+          const x = cx + Math.sin(rad) * 130 - cardW / 2;
+          const y = (1 - Math.cos(rad)) * 90 + 50;
+          return (
+            <button
+              key={i}
+              onClick={() => toggle(i)}
+              style={{
+                position: "absolute",
+                left: x, top: selected ? y - 22 : y,
+                transform: `rotate(${angle}deg) ${selected ? "translateY(-6px)" : ""}`,
+                transformOrigin: "center bottom",
+                transition: "top 240ms cubic-bezier(.34,1.56,.64,1), transform 240ms cubic-bezier(.34,1.56,.64,1), filter 180ms",
+                filter: selected ? "drop-shadow(0 8px 14px rgba(255,127,80,0.45))" : "none",
+                padding: 0, background: "none", border: 0,
+                zIndex: selected ? 100 : i,
+              }}
+            >
+              <div style={{ position: "relative" }}>
+                <TarotBack w={cardW} h={cardH} flat/>
+                {selected && (
+                  <div style={{
+                    position: "absolute", top: -8, right: -6,
+                    width: 22, height: 22, borderRadius: 999,
+                    background: "#FF9F7A", color: "#fff",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    font: "700 12px/1 'ZCOOL KuaiLe', system-ui",
+                    boxShadow: "0 3px 6px rgba(255,127,80,0.4)",
+                    animation: "popIn 320ms var(--ease-back)",
+                  }}>{selectedSlot + 1}</div>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function GridDeck({ picks, toggle }) {
+  return (
+    <div style={{
+      marginTop: 18, padding: 14, borderRadius: 20,
+      background: "rgba(255,255,255,0.55)", border: "1px dashed #E8D7C4",
+      display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8,
+    }}>
+      {Array.from({ length: 22 }).map((_, i) => {
+        const selected = picks.includes(i);
+        const slot = picks.indexOf(i);
+        return (
+          <button key={i} onClick={() => toggle(i)} style={{
+            position: "relative", aspectRatio: "46/68",
+            padding: 0, background: "none", border: 0,
+            transform: selected ? "translateY(-6px) scale(1.04)" : "translateY(0)",
+            transition: "transform 200ms var(--ease-back)",
+            filter: selected ? "drop-shadow(0 6px 12px rgba(255,127,80,0.4))" : "none",
+          }}>
+            <TarotBack w="100%" h="100%" flat style={{ width: "100%", height: "100%" }}/>
+            {selected && (
+              <div style={{
+                position: "absolute", top: -6, right: -6,
+                width: 20, height: 20, borderRadius: 999, background: "#FF9F7A", color: "#fff",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                font: "700 11px/1 'ZCOOL KuaiLe', system-ui",
+                boxShadow: "0 3px 6px rgba(255,127,80,0.4)",
+              }}>{slot + 1}</div>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ================================================================
+// Loading
+// ================================================================
+function LoadingScreen() {
+  const hints = [
+    "塔罗牌正在交头接耳……",
+    "把你的心情拌进牌面里……",
+    "AI 正在菜单里狂翻……",
+    "快了快了，三秒上桌 🍜",
+  ];
+  const [h, setH] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setH(x => (x + 1) % hints.length), 1200);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div style={{ padding: "40px 24px 24px", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+      <LoadingBowl size={140}/>
+      <div style={{ font: "700 18px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>塔罗正在点单……</div>
+      <div style={{ font: "500 13px/1.6 system-ui", color: "#8A6B5A", minHeight: 22, transition: "opacity 200ms" }}>
+        {hints[h]}
+      </div>
+      {/* dot progress */}
+      <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+        {[0,1,2].map(i => (
+          <span key={i} style={{
+            width: 8, height: 8, borderRadius: 999,
+            background: "#FF9F7A",
+            animation: `popIn 800ms ease-in-out ${i*0.15}s infinite alternate`,
+          }}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
+// Step 3 — Result
+// ================================================================
+function ResultStep({ mood, picks, onRestart, onBack }) {
+  const safeMood = MOOD_PICKS[mood] ? mood : "happy";
+  const finalPicks = picks.length === 3 ? picks : MOOD_PICKS[safeMood];
+  const cards = finalPicks.map(i => MAJOR_ARCANA[i]);
+  const recipes = MOOD_RECIPES[safeMood];
+  const reading = MOOD_READING[safeMood];
+  const moodObj = MOODS.find(m => m.id === safeMood);
+
+  const [flipped, setFlipped] = useState([false, false, false]);
+  useEffect(() => {
+    // Stagger flip animation
+    const timers = [0,1,2].map(i =>
+      setTimeout(() => setFlipped(prev => prev.map((v, j) => j === i ? true : v)), 180 + i*220)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  return (
+    <div style={{ padding: "0 20px 28px", animation: "floatUp 420ms var(--ease)" }}>
+      <SectionIntro
+        badge="STEP 03"
+        title="叮~ 塔罗说话了"
+        sub={`今日心情：${moodObj?.name}`}
+      />
+
+      {/* three flipped cards */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 10, margin: "16px 0 18px", perspective: 1000 }}>
+        {cards.map((c, i) => (
+          <div key={i} style={{
+            width: 92, height: 140, position: "relative",
+            transformStyle: "preserve-3d",
+            transform: flipped[i] ? "rotateY(0)" : "rotateY(180deg)",
+            transition: "transform 700ms cubic-bezier(.34,1.3,.64,1)",
+          }}>
+            <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden" }}>
+              <TarotFace card={c} w={92} h={140}/>
+            </div>
+            <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+              <TarotBack w={92} h={140}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 34, marginBottom: 18 }}>
+        {cards.map((c, i) => (
+          <div key={i} style={{ width: 92, textAlign: "center", font: "500 11px/1.3 system-ui", color: "#8A6B5A" }}>
+            {c.name}
+          </div>
+        ))}
+      </div>
+
+      {/* reading bubble */}
+      <div style={{
+        position: "relative",
+        background: "var(--g-card-warm)",
+        border: "1px solid rgba(92,61,46,0.06)",
+        borderRadius: 24,
+        padding: "16px 18px",
+        boxShadow: "var(--sh-md)",
+      }}>
+        <div style={{
+          position: "absolute", top: -8, left: 24,
+          width: 0, height: 0,
+          borderLeft: "10px solid transparent", borderRight: "10px solid transparent",
+          borderBottom: "10px solid #FFF3E3",
+        }}/>
+        <div className="chip chip-orange" style={{ marginBottom: 10 }}>🔮 今日能量解读</div>
+        <div style={{ font: "500 14px/1.75 system-ui", color: "#5C3D2E", textWrap: "pretty" }}>
+          {reading}
+        </div>
+      </div>
+
+      {/* recipe list */}
+      <div style={{ marginTop: 20 }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
+          <div style={{ font: "700 18px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E" }}>
+            🍽️ 今日就吃这 3 样
+          </div>
+          <div className="chip">塔罗 · 厨房版</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {recipes.map((r, i) => (
+            <RecipeRow key={i} r={r} delay={i*80}/>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
+        <button className="btn btn-ghost" style={{ flex: 1, height: 52 }} onClick={onBack}>再抽一次</button>
+        <button className="btn" style={{ flex: 1, height: 52 }} onClick={onRestart}>换个心情</button>
+      </div>
+
+      {/* signature */}
+      <div style={{ textAlign: "center", marginTop: 18, font: "500 11px/1.5 'Ma Shan Zheng', cursive", color: "#B69A87" }}>
+        占卜仅供娱乐 · 真的饿了还是快去吃饭吧 ✦
+      </div>
+    </div>
+  );
+}
+
+function RecipeRow({ r, delay }) {
+  return (
+    <div style={{
+      background: "#fff",
+      border: "1px solid rgba(92,61,46,0.06)",
+      borderRadius: 18,
+      padding: 14,
+      boxShadow: "var(--sh-sm)",
+      display: "flex", gap: 12,
+      animation: `floatUp 400ms var(--ease) both`, animationDelay: `${delay}ms`,
+    }}>
+      <div style={{
+        flex: "0 0 40px", height: 40, borderRadius: 12,
+        background: "linear-gradient(160deg,#FFF3E3,#FFE7D0)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 22,
+      }}>{r.medal}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ font: "700 15px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E", marginBottom: 4 }}>
+          {r.name}
+        </div>
+        <div style={{ font: "500 12.5px/1.7 system-ui", color: "#8A6B5A", textWrap: "pretty" }}>
+          <span style={{ color: "#D6694A", fontWeight: 600 }}>理由 · </span>
+          {r.reason}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
+// Helpers
+// ================================================================
+function SectionIntro({ badge, title, sub, right }) {
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+        <div style={{ font: "600 10px/1 ui-monospace, menlo", color: "#B69A87", letterSpacing: 2 }}>
+          {badge}
+        </div>
+        {right}
+      </div>
+      <div style={{ font: "700 22px/1.3 'ZCOOL KuaiLe', system-ui", color: "#5C3D2E", marginTop: 8 }}>
+        {title}
+      </div>
+      {sub && <div style={{ font: "500 13px/1.5 system-ui", color: "#8A6B5A", marginTop: 4 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function hexA(hex, a) {
+  const h = hex.replace("#","");
+  const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ================================================================
+// App shell (inside iPhone)
+// ================================================================
+function MeishiApp({ tweaks }) {
+  const [step, setStep] = useState(tweaks.initialStep || "mood");
+  const [mood, setMood] = useState(tweaks.initialMood || "");
+  const [picks, setPicks] = useState([]);
+
+  // Sync if tweaks change
+  useEffect(() => { setStep(tweaks.initialStep); }, [tweaks.initialStep]);
+  useEffect(() => { if (tweaks.initialMood) setMood(tweaks.initialMood); }, [tweaks.initialMood]);
+
+  const bg = tweaks.bgVariant === "mint"
+    ? "radial-gradient(120% 80% at 50% 0%, #E8F3EE 0%, #FFF8F0 55%)"
+    : tweaks.bgVariant === "pink"
+    ? "radial-gradient(120% 80% at 50% 0%, #FFE4EA 0%, #FFF8F0 55%)"
+    : "radial-gradient(120% 80% at 50% 0%, #FFF3E0 0%, #FFF8F0 60%)";
+
+  const goDraw = () => { setPicks([]); setStep("draw"); };
+  const goLoading = () => {
+    setStep("loading");
+    setTimeout(() => setStep("result"), 2200);
+  };
+  const restart = () => { setMood(""); setPicks([]); setStep("mood"); };
+
+  return (
+    <div style={{ background: bg, minHeight: "100%", paddingBottom: 30 }}>
+      <AppHeader/>
+      <StepIndicator step={step}/>
+      {step === "mood"    && <MoodStep mood={mood} setMood={setMood} onNext={goDraw}/>}
+      {step === "draw"    && <DrawStep mood={mood} picks={picks} setPicks={setPicks} onNext={goLoading} onBack={() => setStep("mood")} layout={tweaks.deckLayout}/>}
+      {step === "loading" && <LoadingScreen/>}
+      {step === "result"  && <ResultStep mood={mood} picks={picks} onRestart={restart} onBack={() => setStep("draw")}/>}
+    </div>
+  );
+}
+
+Object.assign(window, { MeishiApp, MOODS, TWEAKS });
+
+</script>
+<script type="text/babel" data-src="tweaks">
+// Tweaks.jsx — floating editor surface (controlled by host)
+
+const { useState: useT, useEffect: useEffT } = React;
+
+function TweaksPanel({ tweaks, setTweaks, visible }) {
+  if (!visible) return null;
+  const upd = (k, v) => {
+    setTweaks(prev => ({ ...prev, [k]: v }));
+    try {
+      window.parent.postMessage({ type: "__edit_mode_set_keys", edits: { [k]: v } }, "*");
+    } catch(e) {}
+  };
+  return (
+    <div style={{
+      position: "fixed", right: 16, bottom: 16, zIndex: 200,
+      width: 260, background: "#fff", borderRadius: 20,
+      boxShadow: "0 20px 40px rgba(92,61,46,0.22), 0 6px 14px rgba(92,61,46,0.08)",
+      border: "1px solid rgba(92,61,46,0.08)",
+      padding: 16, font: "500 13px/1.5 system-ui", color: "#5C3D2E",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+        <span style={{ width: 8, height: 8, borderRadius: 999, background: "#FF9F7A", boxShadow: "0 0 0 4px rgba(255,159,122,0.2)" }}/>
+        <div style={{ font: "700 14px/1 'ZCOOL KuaiLe', system-ui" }}>Tweaks</div>
+      </div>
+      <TRow label="跳到哪一步">
+        <TSeg value={tweaks.initialStep} onChange={v => upd("initialStep", v)}
+              options={[["mood","心情"],["draw","抽牌"],["loading","Loading"],["result","结果"]]}/>
+      </TRow>
+      <TRow label="预选心情">
+        <TSeg value={tweaks.initialMood || ""} onChange={v => upd("initialMood", v)}
+              options={[["","无"],["happy","美滋滋"],["energetic","元气"],["emo","emo"],["crash","裂开"]]}/>
+      </TRow>
+      <TRow label="卡牌布局">
+        <TSeg value={tweaks.deckLayout} onChange={v => upd("deckLayout", v)}
+              options={[["fan","扇形"],["grid","网格"]]}/>
+      </TRow>
+      <TRow label="背景色调">
+        <TSeg value={tweaks.bgVariant} onChange={v => upd("bgVariant", v)}
+              options={[["warm","暖橘"],["mint","薄荷"],["pink","柔粉"]]}/>
+      </TRow>
+    </div>
+  );
+}
+
+function TRow({ label, children }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ font: "600 11px/1 system-ui", color: "#8A6B5A", marginBottom: 6, letterSpacing: 0.5 }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+function TSeg({ value, onChange, options }) {
+  return (
+    <div style={{ display: "flex", background: "#FFF3E3", padding: 3, borderRadius: 999, gap: 2, flexWrap: "wrap" }}>
+      {options.map(([v,l]) => (
+        <button key={v} onClick={() => onChange(v)} style={{
+          flex: 1, minWidth: 40,
+          padding: "6px 8px", borderRadius: 999,
+          background: value === v ? "#fff" : "transparent",
+          boxShadow: value === v ? "0 2px 4px rgba(92,61,46,0.1)" : "none",
+          font: "600 11px/1 system-ui", color: value === v ? "#D6694A" : "#8A6B5A",
+          transition: "all 160ms var(--ease)",
+          whiteSpace: "nowrap",
+        }}>{l}</button>
+      ))}
+    </div>
+  );
+}
+
+Object.assign(window, { TweaksPanel });
+
+</script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function Root() {
+  const [tweaks, setTweaks] = useState(window.TWEAKS);
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      const d = e.data || {};
+      if (d.type === "__activate_edit_mode") setEditMode(true);
+      if (d.type === "__deactivate_edit_mode") setEditMode(false);
+    };
+    window.addEventListener("message", handler);
+    // announce availability AFTER listener is attached
+    try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch(e) {}
+    return () => window.removeEventListener("message", handler);
+  }, []);
+
+  return (
+    <>
+      <div className="stage">
+        <SpecPanel/>
+        <div className="phone-col">
+          <div className="phone-label">iPhone · 375×760 · Live Prototype</div>
+          <div className="phone-shell">
+            <div className="phone-content">
+              <MeishiApp tweaks={tweaks}/>
+            </div>
+            <div style={{
+              position: "absolute", bottom: 6, left: 0, right: 0, display: "flex", justifyContent: "center",
+              pointerEvents: "none",
+            }}>
+              <div style={{ width: 134, height: 5, borderRadius: 999, background: "rgba(0,0,0,0.35)" }}/>
+            </div>
+          </div>
+          <div style={{ font: "500 11px/1.5 system-ui", color: "#B69A87", textAlign: "center", maxWidth: 320 }}>
+            点开心情 → 选 3 张卡牌 → 看塔罗吐槽你今天吃啥。<br/>
+            打开 Tweaks 可跳到任意步骤或切换布局。
+          </div>
+        </div>
+      </div>
+      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={editMode}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Root/>);
+</script>
+</body>
+</html>
